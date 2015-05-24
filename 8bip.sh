@@ -1,6 +1,20 @@
 
 BPM=100
 
+declare -A pitches
+pitches[c]=261.23
+pitches[c_]=277,18
+pitches[d]=293,66
+pitches[d_]=311,13
+pitches[e]=329,63
+pitches[f]=349,23
+pitches[f_]=369,99
+pitches[g]=392,00
+pitches[g_]=415,30
+pitches[a]=440,00
+pitches[a_]=466,16
+pitches[b]=493,88
+
 setBPM() {
     if [[ $1 =~ ^-?[0-9]+$ ]] && [ $1 -ge 1 ] && [ $1 -le 3000 ]; then
         BPM=$1
