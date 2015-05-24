@@ -1,20 +1,30 @@
+#!/bin/bash
 
 BPM=100
 
 # Frequencies of 3rd octave
 declare -A pitches
 pitches[c]=261.23
-pitches[c_]=277.18
+pitches[c+]=277.18
+pitches[d-]=${pitches[c+]}
 pitches[d]=293.66
-pitches[d_]=311.13
+pitches[d+]=311.13
+pitches[e-]=${pitches[d+]}
 pitches[e]=329.63
+pitches[f-]=${pitches[e]}
 pitches[f]=349.23
-pitches[f_]=369.99
+pitches[e+]=${pitches[f]}
+pitches[f+]=369.99
+pitches[g-]=${pitches[f+]}
 pitches[g]=392.00
-pitches[g_]=415.30
+pitches[g+]=415.30
+pitches[a-]=${pitches[g+]}
 pitches[a]=440.00
-pitches[a_]=466.16
+pitches[a+]=466.16
+pitches[b-]=${pitches[a+]}
 pitches[b]=493.88
+pitches[c-]=${pitches[b]}
+
 
 setBPM() {
     if [[ $1 =~ ^-?[0-9]+$ ]] && [ $1 -ge 1 ] && [ $1 -le 3000 ]; then
@@ -73,7 +83,6 @@ note() {
             done
         elif [[ $octave -gt 3 ]]; then
             for i in {4..$octave..1}; do
-                echo caca3 boucle $freq
                 freq=$(bc <<< "scale=2;$freq*2")
             done
         fi
