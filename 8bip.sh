@@ -26,10 +26,20 @@ setBPM() {
     fi
 }
 
+getDuration() {
+    if [[ $1 =~ ^-?[0-9]+$ ]] && [ $1 -ge 1 ]; then
+        length=$1
+        echo $(bc <<< "scale=3;($length * 60 / 16) / $BPM")
+        return 0
+    else
+        return 1
+    fi
+}
+
 silence() {
     if [[ $1 =~ ^-?[0-9]+$ ]] && [ $1 -ge 1 ]; then
         length=$1
-        sleep $(( ($length * 60 / 16) / $BPM ))
+        sleep $(getDuration $length)
         return 0
     else
         echo "silence: length " $1 " is not an integer greater or equal to 1"
