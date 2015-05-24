@@ -46,6 +46,14 @@ getDuration() {
     fi
 }
 
+getDurationMS() {
+    length=$1
+    durationSec=$(getDuration $length)
+    float=$(bc <<< "scale=0;$durationSec*1000")
+    echo ${float%.*}
+    return 0
+}
+
 silence() {
     if [[ $1 =~ ^-?[0-9]+$ ]] && [ $1 -ge 1 ]; then
         length=$1
@@ -87,9 +95,9 @@ note() {
             done
         fi
         if [[ $DEBUG == 1 ]]; then
-            echo beep $(($(getDuration $length) * 1000)) $freq
+            echo beep $(getDurationMS $length) $freq
         else
-            beep -l $(($(getDuration $length) * 1000)) -f $freq
+            beep -l $(getDurationMS $length) -f $freq
         fi
         return 0
     else
