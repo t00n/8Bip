@@ -89,7 +89,7 @@ note() {
         if [[ $DEBUG == 1 ]]; then
             echo beep $(getDuration $length) $freq
         else
-            beep -l $(getDuration $length) -f $freq
+            beep -l $(($(getDuration $length) * 1000)) -f $freq
         fi
         return 0
     else
