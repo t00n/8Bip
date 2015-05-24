@@ -67,21 +67,17 @@ note() {
             echo "note: " $1 " is not a note"
             return 1
         fi
-        echo caca1 $pitch $octave $length $freq
         if [[ $octave -lt 3 ]]; then
-            echo caca2
             for i in {2..$octave..-1}; do
-                echo caca2 boucle
                 freq=$(bc <<< "scale=2;$freq/2")
             done
         elif [[ $octave -gt 3 ]]; then
-            echo caca3
             for i in {4..$octave..1}; do
                 echo caca3 boucle $freq
                 freq=$(bc <<< "scale=2;$freq*2")
             done
         fi
-        echo $freq
+        beep -l $(getDuration $length) -f $freq
         return 0
     else
         echo "note: length " $2 " is not an integer greater or equal to 1"
