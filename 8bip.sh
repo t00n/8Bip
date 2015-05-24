@@ -114,10 +114,20 @@ parse() {
         ((i=i+1))
         if [[ $char == "b" ]]; then
             # change bpm
-            echo bpm
+            bpm=
+            while [[ ${partition:$i:1} =~ ^[0-9]$ ]]; do
+                bpm+=${partition:$i:1}
+                ((i=i+1))
+            done
+            setBPM $bpm
         elif [[ $char == "s" ]]; then
             # silence
-            echo silence
+            length=
+            while [[ ${partition:$i:1} =~ ^[0-9]$ ]]; do
+                length+=${partition:$i:1}
+                ((i=i+1))
+            done
+            silence $length
         else
             # note
             nextchar=${partition:$i:1}
