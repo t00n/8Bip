@@ -140,3 +140,5 @@ test() {
     setBPM 4500
     setBPM caca
 }
+
+parse $1
