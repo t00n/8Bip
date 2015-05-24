@@ -69,24 +69,28 @@ note() {
             pitch=${1:0:2}
             octave=${1:2:1}
         else
-            echo "note: " $1 " is not a note"
+            echo "note: "$1" is not a note"
             return 1
         fi
         freq=${pitches[$pitch]}
         if [[ $freq == "" ]]; then
-            echo "note: " $1 " is not a note"
+            echo "note: "$1" is not a note"
             return 1
         fi
         if [[ $octave -lt 3 ]]; then
-            for i in {2..$octave..-1}; do
+            for (( j=2; j >= $octave; j-- )); do
                 freq=$(bc <<< "scale=2;$freq/2")
             done
         elif [[ $octave -gt 3 ]]; then
-            for i in {4..$octave..1}; do
+            for (( j=4; j <= $octave; j++ )); do
                 freq=$(bc <<< "scale=2;$freq*2")
             done
         fi
-        beep -l $(getDuration $length) -f $freq
+        if [[ $DEBUG == 1 ]]; then
+            echo beep $(getDuration $length) $freq
+        else
+            beep -l $(getDuration $length) -f $freq
+        fi
         return 0
     else
         echo "note: length " $2 " is not an integer greater or equal to 1"
@@ -96,6 +100,36 @@ note() {
 
 parse() {
     partition=$1
+    i=0
+    while [[ $i<${#partition} ]]; do
+        char=${partition:$i:1}
+        ((i=i+1))
+        if [[ $char == "b" ]]; then
+            # change bpm
+            echo bpm
+        elif [[ $char == "s" ]]; then
+            # silence
+            echo silence
+        else
+            # note
+            nextchar=${partition:$i:1}
+            ((i=i+1))
+            if [[ $nextchar == "+" ]] || [[ $nextchar == "-" ]]; then
+                # altered note
+                octave=${partition:$i:1}
+                ((i=i+1))
+                note=$char$nextchar$octave
+            else
+                note=$char$nextchar
+            fi
+            length=
+            while [[ ${partition:$i:1} =~ ^[0-9]$ ]]; do
+                length+=${partition:$i:1}
+                ((i=i+1))
+            done
+            note $note $length
+        fi
+    done
 }
 
 test() {
