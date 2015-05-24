@@ -87,7 +87,7 @@ note() {
             done
         fi
         if [[ $DEBUG == 1 ]]; then
-            echo beep $(getDuration $length) $freq
+            echo beep $(($(getDuration $length) * 1000)) $freq
         else
             beep -l $(($(getDuration $length) * 1000)) -f $freq
         fi
