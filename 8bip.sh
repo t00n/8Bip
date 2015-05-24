@@ -109,7 +109,7 @@ note() {
 parse() {
     partition=$1
     i=0
-    while [[ $i<${#partition} ]]; do
+    while [[ $i -lt ${#partition} ]]; do
         char=${partition:$i:1}
         ((i=i+1))
         if [[ $char == "b" ]]; then
